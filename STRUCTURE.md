@@ -15,8 +15,7 @@ public/
 │   └── trash-sorting-presentation.pdf
 ├── gallery/                 # Gallery images
 │   ├── image1.jpg
-│   ├── image2.jpg
-│   └── metadata.json        # Gallery image metadata (titles, captions, alt text)
+│   └── image2.jpg
 ├── images/                  # General images
 │   ├── profile.png          # Profile picture for Hero section
 │   └── research-thumbnail.jpg
@@ -36,9 +35,10 @@ src/
 │   │   ├── Skills.tsx      # Technical expertise
 │   │   ├── News.tsx        # News & updates feed
 │   │   ├── Research.tsx    # Research experience
+│   │   ├── ExtracurricularActivities.tsx # Extracurricular activities
 │   │   ├── Publications.tsx # Academic publications (with toggle)
 │   │   ├── Education.tsx   # Education & job experience
-│   │   ├── Gallery.tsx     # Visual showcase (auto-detecting)
+│   │   ├── ImmersiveGallery.tsx # Gallery page component (immersive list layout)
 │   │   ├── GitHubProfile.tsx # GitHub stats and contribution graph
 │   │   └── Contact.tsx     # Contact information
 │   ├── Layout.tsx          # Main layout wrapper (Navbar + Footer)
@@ -55,7 +55,8 @@ src/
 ├── pages/                  # Next.js pages
 │   ├── _app.tsx            # App wrapper with ThemeProvider
 │   ├── _document.tsx       # Document structure
-│   └── index.tsx           # Home page (renders all sections)
+│   ├── index.tsx           # Home page (renders all sections)
+│   └── gallery.tsx         # Gallery page (separate route)
 │
 ├── styles/                 # Global styles
 │   └── globals.css         # CSS variables, theme colors, global styles
@@ -72,7 +73,7 @@ src/
 - **`Navbar.tsx`**: Fixed top navigation bar with:
   - Left: Name (appears on scroll)
   - Center: Navigation tabs (HOME, PROJECTS, NEWS, RESEARCH, RESUME, CONTACT)
-  - Right: Theme toggle → Download CV button → Mobile menu
+  - Right: Gallery link (separated) → Theme toggle → Download CV button → Mobile menu
 - **`Footer.tsx`**: Footer with copyright and social media links with icons
 - **`ThemeToggle.tsx`**: Button to switch between light and dark themes
 
@@ -103,30 +104,37 @@ src/
    - Research title, venue, technologies, description
    - Responsive: stacks vertically on mobile
 
-6. **`Publications.tsx`** (`id="publications"`)
+6. **`ExtracurricularActivities.tsx`** (`id="extracurricular"`)
+   - Large thumbnail image on left, details on right
+   - Activity title, role, organization, period, location
+   - Description, achievements, technologies
+   - Responsive: stacks vertically on mobile
+
+7. **`Publications.tsx`** (`id="publications"`)
    - Toggle to show/hide publications (initially hidden)
    - Publication cards with title, authors, venue, year
    - Optional: DOI, abstract, PDF link
 
-7. **`Education.tsx`** (`id="education"`)
+8. **`Education.tsx`** (`id="education"`)
    - Two-column layout: Education | Job Experience
    - Education: degree, institution, location, year, description
+   - Thesis: title, description, supervisor, technologies (displayed under degree)
    - Experience: title, company, location, period, responsibilities
 
-8. **`Gallery.tsx`** (`id="gallery"`)
-   - Auto-detects images in `/public/gallery/`
-   - Loads metadata from `/public/gallery/metadata.json`
-   - Hides section if no images found
-   - Displays image count in header
-   - Hover effects with captions
+9. **`ImmersiveGallery.tsx`** (Gallery Page Component)
+   - Separate gallery page with immersive list layout
+   - Alternating image/description layout (left-right, right-left)
+   - Full-screen modal view for images
+   - Lazy loading for performance
+   - Metadata stored directly in `galleryItems` array in data file
 
-9. **`GitHubProfile.tsx`** (`id="github"`)
+10. **`GitHubProfile.tsx`** (`id="github"`)
    - GitHub stats, top languages, streak stats
    - Contribution graph (GitHub-colored)
    - Link to full GitHub profile
    - GitHub-inspired dark background
 
-10. **`Contact.tsx`** (`id="contact"`)
+11. **`Contact.tsx`** (`id="contact"`)
     - Contact information cards
     - Phone, Email, Address
     - No contact form (information only)
@@ -136,13 +144,14 @@ src/
 All content is centralized in `/src/data/index.ts`:
 
 - `personalInfo`: Name, title, email, phone, address, bio, profile image, social links
-- `education`: Education history
+- `education`: Education history (with optional thesis information)
 - `experience`: Job experience
 - `projects`: Featured projects with thumbnails, descriptions, links
 - `publications`: Academic publications
 - `skills`: Technical skills
 - `news`: News items (sorted by date)
 - `research`: Research projects
+- `extracurricularActivities`: Extracurricular activities and leadership roles
 - `galleryItems`: Gallery image references
 - `cvUrl`: Path to CV PDF
 
@@ -189,42 +198,95 @@ Edit `/src/data/index.ts` → `research` array:
 - Optional: `imageUrl`, `link`
 - Place research thumbnails in `/public/images/`
 
-### 6. Update Education & Experience
+### 6. Add/Update Extracurricular Activities
+
+Edit `/src/data/index.ts` → `extracurricularActivities` array:
+- Title, organization, role, period, location
+- Optional: `description`, `achievements` (array), `technologies`, `imageUrl`, `link`
+- Place activity images in `/public/images/`
+
+**Example**:
+```typescript
+export const extracurricularActivities: ExtracurricularActivity[] = [
+  {
+    id: '1',
+    title: 'Team Name',
+    organization: 'Organization Name',
+    role: 'Role Title',
+    period: '2022 – 2024',
+    location: 'Location',
+    description: 'Description of the activity...',
+    technologies: ['Tech1', 'Tech2'],
+    achievements: [
+      'Achievement 1',
+      'Achievement 2',
+    ],
+    link: 'https://...',
+  },
+];
+```
+
+### 7. Update Education & Experience
 
 Edit `/src/data/index.ts`:
 - `education` array: degree, institution, location, year, description
+- Optional `thesis` object: title, description, supervisor, technologies
 - `experience` array: title, company, location, period, description (array of responsibilities)
 
-### 7. Update Skills
+**Education with Thesis Example**:
+```typescript
+export const education: Education[] = [
+  {
+    id: '1',
+    degree: 'Bachelor of Science',
+    institution: 'University Name',
+    location: 'Location',
+    year: '2019 - 2024',
+    description: 'CGPA: 3.02/4.00',
+    thesis: {
+      title: 'Thesis Title',
+      description: 'Thesis description...',
+      technologies: ['Tech1', 'Tech2'],
+      supervisor: 'Supervisor Name, Title, Department',
+    },
+  },
+];
+```
+
+### 8. Update Skills
 
 Edit `/src/data/index.ts` → `skills` array:
 - Skill name (level is stored but not currently displayed)
 
-### 8. Configure Gallery
+### 9. Configure Gallery
+
+The gallery is now on a separate page at `/gallery` accessible via the navbar.
 
 1. **Add images** to `/public/gallery/` (e.g., `image1.jpg`, `image2.jpg`)
 
-2. **Update metadata** in `/public/gallery/metadata.json`:
-```json
-[
+2. **Update gallery items** in `/src/data/index.ts` → `galleryItems`:
+   - Include all metadata directly in the array
+   - Match `filename` with actual image files
+
+**Example**:
+```typescript
+export const galleryItems: GalleryItem[] = [
   {
-    "filename": "image1.jpg",
-    "title": "Image Title",
-    "alt": "Alt text for accessibility",
-    "caption": "Main caption",
-    "subCaption": "Sub-caption or location",
-    "category": "Category Name"
-  }
-]
+    id: '1',
+    imageUrl: '/gallery/image1.jpg',
+    filename: 'image1.jpg',
+    title: 'Image Title',
+    alt: 'Alt text for accessibility',
+    caption: 'Main caption',
+    subCaption: 'Sub-caption or location',
+    category: 'Category Name',
+  },
+];
 ```
 
-3. **Update gallery items** in `/src/data/index.ts` → `galleryItems`:
-   - Match `filename` with actual image files
-   - Metadata from JSON will be merged automatically
+**Note**: Gallery page features an immersive list layout with alternating image/description positions and full-screen modal view.
 
-**Note**: Gallery section automatically hides if no images are found.
-
-### 9. Update CV
+### 10. Update CV
 
 1. Replace PDF in `/public/cv/`
 2. Update `cvUrl` in `/src/data/index.ts`:
@@ -232,12 +294,12 @@ Edit `/src/data/index.ts` → `skills` array:
 export const cvUrl = '/cv/Your-CV-Name.pdf';
 ```
 
-### 10. Customize GitHub Profile
+### 11. Customize GitHub Profile
 
 Edit `/src/components/sections/GitHubProfile.tsx`:
 - Replace `TanvirTaaha` with your GitHub username in all image URLs
 
-### 11. Customize Navigation
+### 12. Customize Navigation
 
 Edit `/src/components/Navbar.tsx` → `navItems` array:
 ```typescript
@@ -250,7 +312,7 @@ const navItems = [
 
 **Important**: The `id` must match the section's `id` attribute.
 
-### 12. Customize Colors/Theme
+### 13. Customize Colors/Theme
 
 Edit `/src/styles/globals.css`:
 - Update CSS variables in `:root` (light mode)
@@ -264,7 +326,7 @@ Edit `/src/styles/globals.css`:
 - ✅ **Responsive Design**: Fully responsive (mobile, tablet, desktop)
 - ✅ **Smooth Animations**: Fast, smooth transitions (200ms)
 - ✅ **Compact Layout**: Efficient use of space, minimal scrolling
-- ✅ **Auto-detecting Gallery**: Hides if no images, shows count
+- ✅ **Separate Gallery Page**: Immersive gallery page with alternating layouts and full-screen modal
 - ✅ **Toggle Publications**: Show/hide publications section
 - ✅ **Sorted News**: Automatically sorted by date (latest first)
 - ✅ **GitHub Integration**: Stats, languages, streak, contribution graph
@@ -285,8 +347,9 @@ Edit `/src/styles/globals.css`:
 ## TypeScript Types
 
 All types are defined in `/src/types/index.ts`:
-- `PersonalInfo`, `Education`, `Experience`
+- `PersonalInfo`, `Education`, `Experience`, `Thesis`
 - `Project`, `Publication`, `ResearchItem`
+- `ExtracurricularActivity`
 - `NewsItem`, `Skill`, `GalleryItem`
 - `SocialLink`, `Stat`
 
@@ -306,9 +369,8 @@ All types are defined in `/src/types/index.ts`:
 
 ## Content Management Strategy
 
-- **Centralized Data**: All content in `/src/data/index.ts`
+- **Centralized Data**: All content in `/src/data/index.ts` (including gallery metadata)
 - **Static Assets**: Organized by type in `/public/` subdirectories
-- **Metadata**: JSON files for structured data (gallery metadata)
 - **Type Safety**: TypeScript interfaces ensure data consistency
 
 ---

@@ -1,4 +1,4 @@
-import { PersonalInfo, Education, Publication, Project, Skill, GalleryItem, NewsItem, ResearchItem, Experience } from '@/types';
+import { PersonalInfo, Education, Publication, Project, Skill, GalleryItem, NewsItem, ResearchItem, Experience, ExtracurricularActivity } from '@/types';
 import { textWithLinks } from '@/utils/text_with_links';
 
 export const personalInfo: PersonalInfo = {
@@ -31,6 +31,12 @@ export const education: Education[] = [
     location: 'Dhaka, Bangladesh',
     year: '2019 - 2024',
     description: 'CGPA: 3.02/4.00',
+    thesis: {
+      title: 'Battery Thermal Management System with the combination of Phase Change Material, Metal Foam and Fin',
+      description: 'Improved heat dissipation of Li-ion batteries using a passive thermal management system with phase-change material and metal fins. Carried out a comparative study of different variation of dimensional parameters.',
+      technologies: ['ANSYS', 'SolidWorks'],
+      supervisor: textWithLinks("[Dr. Md. Ashraful Islam, Professor](https://me.buet.ac.bd/public/old/faculty/prof/ashraful/index.html), [Dept. of Mechanical Engineering, BUET](https://me.buet.ac.bd/)"),
+    },
   },
 ];
 
@@ -125,7 +131,7 @@ export const research: ResearchItem[] = [
     technologies: ['ROS', 'MoveIt', 'Gazebo', 'PyTorch', 'YOLO'],
     description: 'Using computer vision, object localization to classify various waste objects for recycling.\nROS & MoveIt based autonomous pick and place to the correct bin with robotic arm, thoroughly tested in Gazebo.\nSuccessfully categorizing waste objects and successfully sorting them with the prototype.',
     imageUrl: '/images/cobot_paper/Figure_4.png',
-    link: '',
+    link: 'files/cobot_paper/cobot_paper_final.pdf',
   },
 ];
 
@@ -195,11 +201,85 @@ export const experience: Experience[] = [
 ];
 
 export const galleryItems: GalleryItem[] = [
-  { id: '1', imageUrl: '/gallery/image1.jpg', filename: 'image1.jpg', title: 'Mars Rover Competition', category: 'Events' },
-  { id: '2', imageUrl: '/gallery/image2.jpg', filename: 'image2.jpg', title: 'Robotic Arm Project', category: 'Research' },
-  { id: '3', imageUrl: '/gallery/image3.jpg', filename: 'image3.jpg', title: 'ICMIME Presentation', category: 'Academic' },
-  { id: '4', imageUrl: '/gallery/image4.jpg', filename: 'image4.jpg', title: 'Team Interplanetar', category: 'Team' },
-  { id: '5', imageUrl: '/gallery/image5.jpg', filename: 'image5.jpg', title: 'Waste Sorting System', category: 'Research' },
-  { id: '6', imageUrl: '/gallery/image6.jpg', filename: 'image6.jpg', title: 'Workshop Session', category: 'Events' },
+  {
+    id: '1',
+    imageUrl: '/gallery/rover_pics/Renaissance_V1.0_yolo_rag_corner.jpg',
+    filename: 'Renaissance_V1.0_yolo_rag_corner.jpg',
+    title: 'Renaissance V1.0',
+    alt: 'Rover Renaissance V1.0',
+    caption: 'Rover Renaissance V1.0',
+    subCaption: 'Team Interplanetar - BUET Mars Rover Team',
+    category: 'Events',
+  },
+  {
+    id: '2',
+    imageUrl: '/gallery/rover_pics/Prochesta_V1.0_URC-2023_getting_ready.jpg',
+    filename: 'Prochesta_V1.0_URC-2023_getting_ready.jpg',
+    title: 'Getting Ready for URC-2023',
+    alt: 'Getting Ready for URC-2023',
+    caption: 'Getting Ready for URC-2023',
+    subCaption: 'Team Interplanetar - BUET Mars Rover Team',
+    category: 'Team',
+  },
+  {
+    id: '3',
+    imageUrl: '/gallery/rover_pics/Prochesta_V1.0_URC-2023.jpg',
+    filename: 'Prochesta_V1.0_URC-2023.jpg',
+    title: 'Prochesta V1.0 at Mars Research Society, Utah, USA',
+    alt: 'Prochesta V1.0 at Mars Research Society, Utah, USA',
+    caption: 'Prochesta V1.0 at Mars Research Society, Utah, USA',
+    subCaption: 'Team Interplanetar - BUET Mars Rover Team',
+    category: 'Events',
+  },
+  {
+    id: '4',
+    imageUrl: '/gallery/rover_pics/Prochesta_V1.0_URC-2023_test_run.jpg',
+    filename: 'Prochesta_V1.0_URC-2023_test_run.jpg',
+    title: 'Team Interplanetar',
+    alt: 'Team Interplanetar test run of Prochesta V1.0 rover',
+    caption: 'Team Interplanetar test run of Prochesta V1.0 rover',
+    subCaption: 'Team Interplanetar - BUET Mars Rover Team',
+    category: 'Team',
+  },
+  {
+    id: '5',
+    imageUrl: '/gallery/rover_pics/me_with_rover.jpg',
+    filename: 'me_with_rover.jpg',
+    title: 'Me with Renaissance V1.0',
+    alt: 'Me with Renaissance V1.0',
+    caption: 'Me with Renaissance V1.0',
+    subCaption: 'Team Interplanetar - BUET Mars Rover Team',
+    category: 'Team',
+  },
+  // {
+  //   id: '6',
+  //   imageUrl: '/gallery/image6.jpg',
+  //   filename: 'image6.jpg',
+  //   title: 'Workshop Session',
+  //   alt: 'Conducting workshop for students',
+  //   caption: 'Teaching and mentoring session',
+  //   subCaption: 'Educational Workshop',
+  //   category: 'Events',
+  // },
+];
+
+export const extracurricularActivities: ExtracurricularActivity[] = [
+  {
+    id: '1',
+    title: 'Team Interplanetar - BUET Mars Rover Team',
+    organization: 'Bangladesh University of Engineering and Technology (BUET)',
+    role: 'Software Team Lead',
+    period: '2022 – 2024',
+    location: 'Dhaka, Bangladesh',
+    description: 'Led the software development team for the Mars Rover project, developing critical components for the rover\'s software stack and creating the arm manipulation and teleoperation software from the ground up.',
+    technologies: ['ROS', 'C++', 'Python', 'Robotics', 'Control Systems', 'Computer Vision'],
+    achievements: [
+      'Secured 13th position worldwide in European Rover Challenge Remote Formula 2023',
+      'Secured 2nd place in Anatolian Rover Challenge 2024 held at İstanbul Technical University',
+      'Developed much of the components for the rover\'s software stack',
+      'Created the arm manipulation and teleop software stack bottom up',
+    ],
+    link: 'https://buetinterplanetar.com/',
+  },
 ];
 

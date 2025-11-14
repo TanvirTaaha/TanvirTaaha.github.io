@@ -11,6 +11,13 @@ export interface Publication {
   abstract?: string;
 }
 
+export interface Thesis {
+  title: string;
+  description?: string;
+  supervisor?: string | React.ReactNode;
+  technologies?: string[];
+}
+
 export interface Education {
   id: string;
   degree: string;
@@ -18,6 +25,7 @@ export interface Education {
   location: string;
   year: string;
   description?: string;
+  thesis?: Thesis;
 }
 
 export interface Project {
@@ -112,6 +120,20 @@ export interface ResearchItem {
   title: string;
   description?: string;
   venue?: string | React.ReactNode;
+  technologies?: string[];
+  link?: string;
+  imageUrl?: string;
+}
+
+export interface ExtracurricularActivity {
+  id: string;
+  title: string;
+  organization: string;
+  role: string;
+  period: string;
+  location?: string;
+  description?: string;
+  achievements?: string[];
   technologies?: string[];
   link?: string;
   imageUrl?: string;

@@ -10,9 +10,10 @@ Welcome to my personal academic website! This is a modern, responsive portfolio 
 - **Technical Skills**: Display of technical expertise with chip-style badges
 - **News & Updates**: Chronologically sorted news feed (latest first) with vertical scrolling
 - **Research Experience**: Research projects with large thumbnails and detailed descriptions
+- **Extracurricular Activities**: Leadership roles and activities with achievements
 - **Publications**: Academic publications with toggle to show/hide (initially hidden)
-- **Education & Experience**: Two-column layout showing education and job experience
-- **Visual Gallery**: Auto-detecting image gallery with metadata support
+- **Education & Experience**: Two-column layout showing education (with thesis) and job experience
+- **Gallery Page**: Separate immersive gallery page with alternating layouts and full-screen modal view
 - **GitHub Profile**: Compact GitHub stats, top languages, streak, and contribution graph
 - **Contact Information**: Contact details with cards for phone, email, and address
 
@@ -28,7 +29,7 @@ Welcome to my personal academic website! This is a modern, responsive portfolio 
 - **Fixed Navigation Bar**: 
   - Left: Name (appears on scroll)
   - Center: Navigation tabs (HOME, PROJECTS, NEWS, RESEARCH, RESUME, CONTACT)
-  - Right: Theme toggle → Download CV button → Mobile menu
+  - Right: Gallery link (separated) → Theme toggle → Download CV button → Mobile menu
 - **Smooth Scrolling**: Automatic section highlighting as you scroll
 - **Mobile Menu**: Collapsible menu with background overlay
 
@@ -49,7 +50,6 @@ website/
 │   ├── cv/                   # CV/Resume PDFs
 │   ├── files/                # Project PDFs and documents
 │   ├── gallery/              # Gallery images
-│   │   └── metadata.json     # Gallery image metadata
 │   ├── images/               # General images (profile, research thumbnails)
 │   └── publications/         # Publication PDFs
 │
@@ -61,9 +61,10 @@ website/
 │   │   │   ├── Skills.tsx
 │   │   │   ├── News.tsx
 │   │   │   ├── Research.tsx
+│   │   │   ├── ExtracurricularActivities.tsx
 │   │   │   ├── Publications.tsx
 │   │   │   ├── Education.tsx
-│   │   │   ├── Gallery.tsx
+│   │   │   ├── ImmersiveGallery.tsx
 │   │   │   ├── GitHubProfile.tsx
 │   │   │   └── Contact.tsx
 │   │   ├── Layout.tsx        # Main layout wrapper
@@ -80,7 +81,8 @@ website/
 │   ├── pages/                # Next.js pages
 │   │   ├── _app.tsx          # App wrapper with ThemeProvider
 │   │   ├── _document.tsx     # Document structure
-│   │   └── index.tsx         # Home page
+│   │   ├── index.tsx         # Home page
+│   │   └── gallery.tsx       # Gallery page (separate route)
 │   │
 │   ├── styles/               # Global styles
 │   │   └── globals.css       # CSS variables and global styles
@@ -219,7 +221,32 @@ export const news: NewsItem[] = [
 ];
 ```
 
-### 5. Add Research Projects
+### 5. Add Extracurricular Activities
+
+Update the `extracurricularActivities` array:
+
+```typescript
+export const extracurricularActivities: ExtracurricularActivity[] = [
+  {
+    id: '1',
+    title: 'Activity Title',
+    organization: 'Organization Name',
+    role: 'Role Title',
+    period: '2022 – 2024',
+    location: 'Location', // Optional
+    description: 'Description of the activity...', // Optional
+    technologies: ['Tech1', 'Tech2'], // Optional
+    achievements: [ // Optional
+      'Achievement 1',
+      'Achievement 2',
+    ],
+    imageUrl: '/images/activity-thumbnail.jpg', // Optional
+    link: 'https://...', // Optional
+  },
+];
+```
+
+### 6. Add Research Projects
 
 Update the `research` array:
 
@@ -237,7 +264,7 @@ export const research: ResearchItem[] = [
 ];
 ```
 
-### 6. Add Education & Experience
+### 7. Add Education & Experience
 
 Update the `education` and `experience` arrays:
 
@@ -250,8 +277,15 @@ export const education: Education[] = [
     location: 'Location',
     year: '2019 - 2024',
     description: 'Additional details...',
+    thesis: { // Optional
+      title: 'Thesis Title',
+      description: 'Thesis description...',
+      technologies: ['Tech1', 'Tech2'],
+      supervisor: 'Supervisor Name, Title, Department',
+    },
   },
 ];
+```
 
 export const experience: Experience[] = [
   {
@@ -268,7 +302,7 @@ export const experience: Experience[] = [
 ];
 ```
 
-### 7. Add Skills
+### 8. Add Skills
 
 Update the `skills` array:
 
@@ -279,26 +313,13 @@ export const skills: Skill[] = [
 ];
 ```
 
-### 8. Configure Gallery
+### 9. Configure Gallery
+
+The gallery is now on a separate page at `/gallery` accessible via the navbar.
 
 1. **Add images** to `public/gallery/` (e.g., `image1.jpg`, `image2.jpg`)
 
-2. **Update metadata** in `public/gallery/metadata.json`:
-
-```json
-[
-  {
-    "filename": "image1.jpg",
-    "title": "Image Title",
-    "alt": "Alt text for accessibility",
-    "caption": "Main caption",
-    "subCaption": "Sub-caption or location",
-    "category": "Category Name"
-  }
-]
-```
-
-3. **Update the gallery items** in `src/data/index.ts`:
+2. **Update the gallery items** in `src/data/index.ts` with all metadata:
 
 ```typescript
 export const galleryItems: GalleryItem[] = [
@@ -306,14 +327,18 @@ export const galleryItems: GalleryItem[] = [
     id: '1', 
     imageUrl: '/gallery/image1.jpg', 
     filename: 'image1.jpg',
-    // Optional: title, alt, caption, subCaption, category
+    title: 'Image Title',
+    alt: 'Alt text for accessibility',
+    caption: 'Main caption',
+    subCaption: 'Sub-caption or location',
+    category: 'Category Name',
   },
 ];
 ```
 
-**Note**: The gallery section automatically hides if no images are found in the gallery folder.
+**Note**: The gallery page features an immersive list layout with alternating image/description positions and full-screen modal view. Images are lazy-loaded for better performance.
 
-### 9. Update CV
+### 10. Update CV
 
 1. Place your CV PDF in `public/cv/`
 2. Update the `cvUrl` in `src/data/index.ts`:
@@ -322,7 +347,7 @@ export const galleryItems: GalleryItem[] = [
 export const cvUrl = '/cv/Your-CV-Name.pdf';
 ```
 
-### 10. Customize GitHub Profile
+### 11. Customize GitHub Profile
 
 Edit `src/components/sections/GitHubProfile.tsx` to update the GitHub username:
 
@@ -331,7 +356,7 @@ Edit `src/components/sections/GitHubProfile.tsx` to update the GitHub username:
 src="https://github-readme-stats.vercel.app/api?username=YOUR_USERNAME&..."
 ```
 
-### 11. Customize Colors
+### 12. Customize Colors
 
 Edit `src/styles/globals.css` to change the color palette:
 
@@ -397,7 +422,7 @@ Make sure the `id` matches the section's `id` attribute.
 - **Publications**: `public/publications/` - Publication PDFs
 - **Project Files**: `public/files/` - Project-related PDFs and documents
 - **Images**: `public/images/` - Profile pictures, research thumbnails, project images
-- **Gallery**: `public/gallery/` - Gallery images with metadata
+- **Gallery**: `public/gallery/` - Gallery images (metadata stored in data file)
 
 ### Content Management
 All content is centralized in `src/data/index.ts` for easy updates without touching component code.

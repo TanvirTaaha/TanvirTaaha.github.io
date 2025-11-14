@@ -16,7 +16,7 @@ export default function Education({ education, experience }: EducationProps) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Education Column */}
           <div>
-            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Education Quality</h3>
+            <h3 className="text-lg font-semibold text-[var(--text-primary)] mb-3">Education</h3>
             <div className="space-y-3">
               {education.map((edu) => (
                 <div
@@ -32,6 +32,39 @@ export default function Education({ education, experience }: EducationProps) {
                     <p className="text-xs text-[var(--text-secondary)] mt-2 pt-2 border-t border-[var(--border)]">
                       {edu.description}
                     </p>
+                  )}
+                  {edu.thesis && (
+                    <div className="mt-3 pt-3 border-t border-[var(--border)]">
+                      <p className="text-xs font-semibold text-[var(--accent)] uppercase tracking-wider mb-2">
+                        Undergraduate Thesis
+                      </p>
+                      <h5 className="text-sm font-semibold text-[var(--text-primary)] mb-2 leading-snug">
+                        {edu.thesis.title}
+                      </h5>
+                      {edu.thesis.description && (
+                        <p className="text-xs text-[var(--text-secondary)] leading-relaxed mb-2">
+                          {edu.thesis.description}
+                        </p>
+                      )}
+                      {edu.thesis.technologies && edu.thesis.technologies.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-2">
+                          {edu.thesis.technologies.map((tech) => (
+                            <span
+                              key={tech}
+                              className="px-2 py-0.5 bg-[var(--bg-secondary)] text-[var(--text-secondary)] rounded text-xs border border-[var(--border)]"
+                            >
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      {edu.thesis.supervisor && (
+                        <p className="text-xs text-[var(--text-muted)] mt-2 pt-2 border-t border-[var(--border)]">
+                          <span className="font-medium text-[var(--text-secondary)]">Supervisor: </span>
+                          {edu.thesis.supervisor}
+                        </p>
+                      )}
+                    </div>
                   )}
                 </div>
               ))}

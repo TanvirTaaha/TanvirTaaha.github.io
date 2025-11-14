@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import ThemeToggle from './ThemeToggle';
 import { PersonalInfo } from '@/types';
 
@@ -17,8 +19,12 @@ export default function Navbar({ cvUrl, info }: { cvUrl: string; info: PersonalI
   const [activeSection, setActiveSection] = useState('about');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const router = useRouter();
+  const isGalleryPage = router?.pathname === '/gallery';
 
   useEffect(() => {
+    if (isGalleryPage) return; // Don't track scroll on gallery page
+    
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
       const scrollPosition = window.scrollY + 100;
@@ -37,7 +43,7 @@ export default function Navbar({ cvUrl, info }: { cvUrl: string; info: PersonalI
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isGalleryPage]);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -80,9 +86,15 @@ export default function Navbar({ cvUrl, info }: { cvUrl: string; info: PersonalI
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => scrollToSection(item.id)}
+                onClick={() => {
+                  if (isGalleryPage) {
+                    router.push('/#' + item.id);
+                  } else {
+                    scrollToSection(item.id);
+                  }
+                }}
                 className={`text-sm font-medium transition-colors duration-200 ${
-                  activeSection === item.id
+                  activeSection === item.id && !isGalleryPage
                     ? 'text-[var(--accent)]'
                     : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
                 }`}
@@ -92,8 +104,19 @@ export default function Navbar({ cvUrl, info }: { cvUrl: string; info: PersonalI
             ))}
           </div>
 
-          {/* Right Side - Theme Toggle → Download CV → Mobile Menu */}
+          {/* Right Side - Gallery Link → Theme Toggle → Download CV → Mobile Menu */}
           <div className="flex items-center gap-4">
+            <Link
+              href="/gallery"
+              className={`text-sm font-medium transition-colors duration-200 ${
+                isGalleryPage
+                  ? 'text-[var(--accent)] font-semibold'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+              }`}
+            >
+              GALLERY
+            </Link>
+            <div className="w-px h-6 bg-[var(--border)]"></div>
             <ThemeToggle />
             <a
               href={cvUrl}
@@ -124,9 +147,16 @@ export default function Navbar({ cvUrl, info }: { cvUrl: string; info: PersonalI
               {navItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => scrollToSection(item.id)}
+                  onClick={() => {
+                    if (isGalleryPage) {
+                      router.push('/#' + item.id);
+                    } else {
+                      scrollToSection(item.id);
+                    }
+                    setIsMobileMenuOpen(false);
+                  }}
                   className={`text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
-                    activeSection === item.id
+                    activeSection === item.id && !isGalleryPage
                       ? 'bg-[var(--accent)] text-white'
                       : 'text-[var(--text-secondary)] hover:bg-[var(--hover-bg)]'
                   }`}
@@ -134,6 +164,17 @@ export default function Navbar({ cvUrl, info }: { cvUrl: string; info: PersonalI
                   {item.label}
                 </button>
               ))}
+              <Link
+                href="/gallery"
+                className={`text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  isGalleryPage
+                    ? 'bg-[var(--accent)] text-white font-semibold'
+                    : 'text-[var(--text-secondary)] hover:bg-[var(--hover-bg)]'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                GALLERY
+              </Link>
               <a
                 href={cvUrl}
                 download
