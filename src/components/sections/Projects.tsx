@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import { Project } from '@/types';
 
 interface ProjectsProps {
@@ -22,20 +21,17 @@ export default function Projects({ projects }: ProjectsProps) {
             >
               <div className="flex flex-col md:flex-row">
                 {/* Thumbnail Image - Left Side */}
-                <div className="relative w-full md:w-48 h-48 md:h-auto bg-[var(--bg-secondary)] overflow-hidden flex-shrink-0">
-                  {project.imageUrl ? (
-                    <Image
+                <div className="relative w-full md:w-48 h-48 bg-[var(--bg-secondary)] flex-shrink-0 flex items-center justify-center p-4 overflow-hidden">
+                  {project.imageUrl && project.imageUrl.trim() !== '' ? (
+                    <img
                       src={project.imageUrl}
                       alt={project.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-300"
+                      className="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-110 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <svg className="w-16 h-16 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                      </svg>
-                    </div>
+                    <svg className="w-16 h-16 text-[var(--text-muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
                   )}
                 </div>
 

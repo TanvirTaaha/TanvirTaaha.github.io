@@ -111,7 +111,7 @@ export interface ResearchItem {
   id: string;
   title: string;
   description?: string;
-  venue?: string;
+  venue?: string | React.ReactNode;
   technologies?: string[];
   link?: string;
   imageUrl?: string;

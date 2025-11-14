@@ -1,5 +1,5 @@
-import React from 'react';
-import { PersonalInfo, Education, Publication, Project, Skill, GalleryItem, Stat, NewsItem, ResearchItem, Experience } from '@/types';
+import { PersonalInfo, Education, Publication, Project, Skill, GalleryItem, NewsItem, ResearchItem, Experience } from '@/types';
+import { textWithLinks } from '@/utils/text_with_links';
 
 export const personalInfo: PersonalInfo = {
   name: 'MD. TANVIR HOSSAIN TAAHA',
@@ -8,21 +8,11 @@ export const personalInfo: PersonalInfo = {
   phone: '+8801764223436',
   address: 'Dhaka, Bangladesh',
   location: 'Dhaka, Bangladesh',
-  bio: (
-    <>
-      I am currently working as a Machine Learning Engineer at{' '}
-      <a
-        href="https://www.aci-bd.com"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-[var(--accent)] hover:underline"
-      >
-        ACI PLC
-      </a>
-      . Where I am working on different projects mainly on computer vision as well as scaling up existing projects, making them production grade software.
-      <br />
-      I have worked as Software Team Lead on the Mars Rover Team at Bangladesh University of Engineering and Technology during my graduation. I developed many softwares for the rover as well as created the arm manipulation and teleop software stack bottom up.
-    </>
+  bio: textWithLinks(
+    'I am currently working as a Machine Learning Engineer at [ACI PLC](https://www.aci-bd.com). Where I am working on different projects mainly on computer vision as well as scaling up existing projects, making them production grade software.\n\n' +
+    "I have worked as Software Team Lead on the [Mars Rover Team](https://buetinterplanetar.com/) at [Bangladesh University of Engineering and Technology](https://www.buet.ac.bd/) during my graduation. I developed much of the components for the rover's software as well as created the arm manipulation and teleop software stack bottom up.\n\n" +
+    "I hold a BSc in Mechanical Engineering from [Bangladesh University of Engineering and Technology](https://www.buet.ac.bd/). But despite my degree in mechanical engineering, I have a strong interest in computer science and programming. I have worked on many projects in the field of computer vision, robotics, and machine learning.\n\n" +
+    "I am also a strong believer in the power of open source and free software. I am a strong advocate for the use of free software and open source software in all aspects of life."
   ),
   profileImage: '/images/profile.png',
   socialLinks: [
@@ -71,43 +61,49 @@ export const projects: Project[] = [
     title: 'Field-Oriented Control (FOC) for BLDC Motor',
     description: 'Developed a robust real-time communication interface using CAN bus protocol and implemented high-performance FOC algorithm on STM32 microcontroller for precise BLDC motor commutation.',
     technologies: ['STM32Duino', 'C/C++', 'FOC', 'CAN Bus'],
-    githubUrl: 'https://github.com/TanvirTaaha',
+    imageUrl: '/images/projects/stm32_esc_bldc.png',
+    githubUrl: 'https://github.com/TanvirTaaha/FOC_stm32_CAN',
   },
   {
     id: '2',
     title: 'Pico PIO-Based Software I2C Expansion',
     description: 'Implemented software I2C communication channels on Raspberry Pi Pico using Programmable I/O (PIO) state machines to expand I2C interfaces beyond hardware limits.',
     technologies: ['Raspberry Pi Pico SDK', 'PIO Assembly', 'I2C'],
-    githubUrl: 'https://github.com/TanvirTaaha',
+    imageUrl: '/images/projects/rpi-pico_i2c_pio.png',
+    githubUrl: '',
   },
   {
     id: '3',
     title: 'YOLO Annotator - VSCode Extension',
     description: 'VSCode Extension to annotate images directly as Ultralytics YOLO format with auto-detection of directories and fast loading in remote SSH sessions.',
     technologies: ['TypeScript', 'HTML', 'CSS', 'YOLO'],
-    githubUrl: 'https://github.com/TanvirTaaha',
+    imageUrl: '/images/projects/yolo-annotator-logo.png',
+    githubUrl: 'https://github.com/TanvirTaaha/yolo-annotator-vscode',
   },
   {
     id: '4',
     title: 'Serialx: Cross-Platform C++ Serial Library',
     description: 'Modernized a lightweight, cross-platform C++ serial library inspired by PySerial with reliable serial communication support for microcontrollers on Linux and Windows.',
     technologies: ['C++', 'Serial Communication', 'POSIX', 'Windows API'],
-    githubUrl: 'https://github.com/TanvirTaaha',
+    imageUrl: '',
+    githubUrl: 'https://github.com/TanvirTaaha/serialx',
   },
-  {
-    id: '5',
-    title: 'Deep Learning Based Trash Sorting Robotic Arm',
-    description: 'Trained YOLOv5 with custom dataset using transfer learning and developed autonomous control for robotic arm using MoveIt for complete trash sorting automation.',
-    technologies: ['ROS', 'MoveIt', 'PyTorch', 'YOLOv5', 'SolidWorks'],
-    pdfUrl: '/files/trash-sorting-paper.pdf',
-    presentationPdfUrl: '/files/trash-sorting-presentation.pdf',
-  },
-  {
-    id: '6',
-    title: 'Shell & Tube Heat Exchanger Design',
-    description: 'Designed and manufactured a Shell and Tube Heat Exchanger to lower Engine Oil temperature with optimization using HTRI Xchanger Suite and comprehensive testing.',
-    technologies: ['SolidWorks', 'HTRI', 'MATLAB'],
-  },
+  // {
+  //   id: '5',
+  //   title: 'Deep Learning Based Trash Sorting Robotic Arm',
+  //   description: 'Trained YOLOv5 with custom dataset using transfer learning and developed autonomous control for robotic arm using MoveIt for complete trash sorting automation.',
+  //   technologies: ['ROS', 'MoveIt', 'PyTorch', 'YOLOv5', 'SolidWorks'],
+  //   imageUrl: '',
+  //   pdfUrl: '',
+  //   presentationPdfUrl: '',
+  // },
+  // {
+  //   id: '6',
+  //   title: 'Shell & Tube Heat Exchanger Design',
+  //   description: 'Designed and manufactured a Shell and Tube Heat Exchanger to lower Engine Oil temperature with optimization using HTRI Xchanger Suite and comprehensive testing.',
+  //   technologies: ['SolidWorks', 'HTRI', 'MATLAB'],
+  //   imageUrl: '',
+  // },
 ];
 
 export const cvUrl = '/cv/CV-Tanvir Hossain Taaha.pdf';
@@ -125,10 +121,11 @@ export const research: ResearchItem[] = [
   {
     id: '1',
     title: 'Automated Waste Sorting using Deep Learning and Robotic Manipulation: A Comprehensive Approach',
-    venue: 'Presented at ICMIME\'24',
+    venue: textWithLinks("Presented at [ICMIME'24](https://icmime-ruet.ac.bd/)"),
     technologies: ['ROS', 'MoveIt', 'Gazebo', 'PyTorch', 'YOLO'],
     description: 'Using computer vision, object localization to classify various waste objects for recycling.\nROS & MoveIt based autonomous pick and place to the correct bin with robotic arm, thoroughly tested in Gazebo.\nSuccessfully categorizing waste objects and successfully sorting them with the prototype.',
-    imageUrl: '/images/research-thumbnail.jpg',
+    imageUrl: '/images/cobot_paper/Figure_4.png',
+    link: '',
   },
 ];
 
@@ -160,6 +157,13 @@ export const news: NewsItem[] = [
     description: 'Secured 2nd place in the final round of Anatolian Rover Challenge 2024 held at İstanbul Technical University as Software Team Lead.',
     date: '2024-07-01',
     category: 'Achievement',
+  },
+  {
+    id: '5',
+    title: 'Released YOLO Annotator - VSCode Extension',
+    description: 'Released my first open source project, YOLO Annotator - VSCode Extension. It is a VSCode extension that allows you to annotate images directly as Ultralyots YOLO format with auto-detection of directories and fast loading in remote SSH sessions.',
+    date: '2025-06-14',
+    category: 'Open Source',
   },
 ];
 

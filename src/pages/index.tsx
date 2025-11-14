@@ -12,7 +12,7 @@ import Contact from "@/components/sections/Contact";
 import {
   personalInfo,
   education,
-  publications,
+  // publications,
   projects,
   skills,
   news,
@@ -29,7 +29,7 @@ export default function Home() {
       <Projects projects={projects} />
       <News news={news} />
       <Research research={research} />
-      <Publications publications={publications} />
+      {/* <Publications publications={publications} /> */}
       <Education education={education} experience={experience} />
       <Gallery items={galleryItems} />
       <Skills skills={skills} />
